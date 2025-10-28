@@ -153,6 +153,13 @@ private fun resultTemplate(file: File, results: List<String>) =
 
 private fun main() {
     repos.forEach { ic: Repo ->
+        val file = File(ic.localDirectoryPathString)
+        check(file.exists() && file.isDirectory) {
+            "$file is not an existing directory."
+        }
+    }
+
+    repos.forEach { ic: Repo ->
         val localDirectoryPathString = ic.localDirectoryPathString
         val onlineUrlWithBranch = ic.onlineUrlWithBranch
 
