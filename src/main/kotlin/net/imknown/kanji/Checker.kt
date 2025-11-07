@@ -134,8 +134,6 @@ class Repo (
 
 private fun lineTemplate(urlOnline: String, line: String, input: String, finalNotIncludedString: String) =
     "$urlOnline#$line\t${input.trim()}"
-
-//private fun lineTemplate(urlOnline: String, line: String, input: String, finalNotIncludedString: String) =
 //    """
 //    |- $line `$input`: $finalNotIncludedString}
 //    |  $urlOnline#$line
@@ -143,7 +141,6 @@ private fun lineTemplate(urlOnline: String, line: String, input: String, finalNo
 
 private fun resultTemplate(file: File, results: List<String>) =
     results.joinToString("\n") + "\n"
-//private fun resultTemplate(file: File, results: List<String>) =
 //    """
 //    |
 //    |> `${file.path}`
@@ -159,9 +156,9 @@ private fun main() {
         }
     }
 
-    repos.forEach { ic: Repo ->
-        val localDirectoryPathString = ic.localDirectoryPathString
-        val onlineUrlWithBranch = ic.onlineUrlWithBranch
+    repos.forEach { repo: Repo ->
+        val localDirectoryPathString = repo.localDirectoryPathString
+        val onlineUrlWithBranch = repo.onlineUrlWithBranch
 
         val outputParentDir = File("$currentRootDir/output")
         outputParentDir.mkdir()
@@ -181,13 +178,14 @@ private fun main() {
         val logDir = File(outputParentDir, "log")
         logDir.mkdir()
         val outputFileLog = File(logDir, "$projectDir-Log.$outputFileExt")
+
         outputFileLog.writeText("--- Ignored ---\n")
         val filesIgnored = directoriesTreeWalk - files.toSet()
         filesIgnored.forEach { file ->
             outputFileLog.appendText(file.path + "\n")
         }
-        outputFileLog.appendText("\n--- Checked ---\n")
 
+        outputFileLog.appendText("\n--- Checked ---\n")
         val totalSize = files.toList().size
         files.forEachIndexed { index, file ->
             val fileLog = "${index + 1}/$totalSize: ${file.path}"
